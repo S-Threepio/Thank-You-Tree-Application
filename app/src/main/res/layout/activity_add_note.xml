@@ -38,7 +38,7 @@
             android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/fromSpinner"
+            android:id="@+id/toSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -51,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Write your Thank You note"
+        android:hint="Write your thank you note"
         android:lineSpacingExtra="3sp"
         android:layout_marginHorizontal="20dp"
         />
@@ -73,7 +73,7 @@
             android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/toSpinner"
+            android:id="@+id/fromSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -112,8 +112,9 @@
         android:padding="10dp"
         android:layout_gravity="center"
         android:textSize="15sp"
+        android:lineSpacingExtra="3sp"
         android:textColor="#000000"
-        android:text="Hello this is a disclaimer for you Hello this is a disclaimer for you Hello this is a disclaimer for youHello this is a disclaimer for you"
+        android:text="The Thank You note wont be added if its empty.\nIf From/To field is kept empty (-) then that field wont be counted for dashboard however the fields which are filled are countable for dashboard"
         />
     </LinearLayout>
 </LinearLayout>

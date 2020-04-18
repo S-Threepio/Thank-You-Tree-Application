@@ -1,11 +1,14 @@
 package com.example.thankyoutree
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.thankyoutree.model.Request
@@ -14,17 +17,17 @@ import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_add_note.*
-import kotlinx.android.synthetic.main.spinner_layout.view.*
 import retrofit2.Retrofit
 
 
 class AddNote : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+    lateinit var adapter:ArrayAdapter<String>
     val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_note)
-        val arrayNames= arrayListOf<String>("-","one","two","three","one","two","three","one","two","three","one","two","three","one","two","three","one","two","three","one","two","three","one","two","three","one","two","three","one","two","three")
-        val adapter = ArrayAdapter<String>(this,R.layout.spinner_layout,arrayNames)
+        val arrayNames:Array<String> = intent.getStringExtra("names").split(",").toTypedArray()
+        adapter = ArrayAdapter<String>(this,R.layout.spinner_layout,arrayNames)
         adapter.setDropDownViewResource(R.layout.spinner_layout)
         fromSpinner.adapter = adapter
         fromSpinner.setOnItemSelectedListener(this)
@@ -32,15 +35,25 @@ class AddNote : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         toSpinner.setOnItemSelectedListener(this)
 
         addNoteButton.setOnClickListener {
+            hideSoftKeyboard(editNote)
             if (editNote.text.toString().isNotEmpty()){
                 addNewNote(fromSpinner.selectedItem.toString(),editNote.text.toString(),toSpinner.selectedItem.toString())
             }
         }
     }
+    protected fun hideSoftKeyboard(input: EditText) {
+        val imm: InputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(input.windowToken, 0)
+    }
 
     override fun onResume() {
         super.onResume()
+        fromSpinner.adapter = adapter
+        toSpinner.adapter=adapter
+        editNote.text.clear()
         loading.visibility=View.GONE
+
     }
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -69,7 +82,6 @@ class AddNote : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     Toast.makeText(this,"please check your internet connection",Toast.LENGTH_SHORT).show()
                 }
             )
-
-
     }
+
 }
