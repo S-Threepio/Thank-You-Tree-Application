@@ -7,36 +7,113 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/edit_to"
-        android:hint="To"
+    <RelativeLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/progreesBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_centerInParent="true"
+                />
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:lineSpacingExtra="3sp"
-        />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:text="To : "
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/fromSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
+    </LinearLayout>
+
     <EditText
         android:id="@+id/editNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:hint="Write your Thank You note"
+        android:lineSpacingExtra="3sp"
+        android:layout_marginHorizontal="20dp"
+        />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:lineSpacingExtra="3sp"
-        />
-    <EditText
-        android:id="@+id/edit_from"
-        android:hint="From"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:lineSpacingExtra="3sp"
-        />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:text="From : "
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/toSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/addNoteButton"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Add Thank You"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:layout_gravity="center|bottom"
+        android:background="#8FFFC107"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="!"
+            android:textSize="50sp"
+            android:padding="10dp"
+            android:textColor="#000000"/>
+    <TextView
+        android:id="@+id/disclaimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
         android:layout_gravity="center"
         android:textSize="15sp"
-        android:layout_height="wrap_content"
-        android:text="Add Thank You"/>
+        android:textColor="#000000"
+        android:text="Hello this is a disclaimer for you Hello this is a disclaimer for you Hello this is a disclaimer for youHello this is a disclaimer for you"
+        />
+    </LinearLayout>
 </LinearLayout>

@@ -7,7 +7,19 @@
     android:background="@drawable/treebit"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
+    <RelativeLayout
+        android:id="@+id/loadingNotes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progreesBar1"
+            style="?android:attr/progressBarStyle"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
     <ListView
         android:id="@+id/list_view_id"
         android:layout_width="match_parent"
