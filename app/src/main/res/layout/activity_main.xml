@@ -9,20 +9,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:id="@+id/loadingMain"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/progreesBar7"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
-    </RelativeLayout>
-
     <TextView
         android:id="@+id/add"
         android:layout_width="match_parent"
@@ -61,5 +47,6 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
+    <include layout="@layout/loader_layout" />
 
 </LinearLayout>

@@ -18,7 +18,7 @@
         android:textStyle="bold"
         android:textColor="#000000"
         android:paddingVertical="5dp"
-        android:text="Most Thank you Received" />
+        android:text="Most Thank you Given" />
 
     <TextView
         android:id="@+id/helper"
@@ -32,6 +32,6 @@
         android:textColor="#000000"
         android:textStyle="bold"
         android:padding="5dp"
-        android:text="Most Thank you Given" />
+        android:text="Most Thank you Received" />
 
 </LinearLayout>

@@ -7,19 +7,7 @@
     android:background="@drawable/treebit"
     android:orientation="vertical"
     tools:context=".MainActivity">
-    <RelativeLayout
-        android:id="@+id/loadingHumble"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-        <ProgressBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/progreesBar3"
-            style="?android:attr/progressBarStyle"
-            android:layout_centerInParent="true"
-            />
-    </RelativeLayout>
+
     <ListView
         android:layout_marginTop="10dp"
         android:id="@+id/humble_view"
@@ -27,4 +15,5 @@
         android:layout_height="wrap_content"
         android:divider="@null" />
 
+    <include layout="@layout/loader_layout" />
 </LinearLayout>
