@@ -26,6 +26,7 @@ class LandingFragment : Fragment(), TreeBaseContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.setTitle("Thank You Tree")
         return inflater.inflate(R.layout.activity_main, container, false)
     }
 
@@ -52,7 +53,7 @@ class LandingFragment : Fragment(), TreeBaseContract.View {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    activity?.replace(AddNoteFragment.newInstance(it.names))
+                    activity?.replace(AddNoteFragment.newInstance(it.names),withStateLoss = false)
                 }, {
                     (activity as MainActivity).hideLoadingView()
                     Toast.makeText(

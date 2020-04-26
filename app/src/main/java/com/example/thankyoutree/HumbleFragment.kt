@@ -13,7 +13,6 @@ import com.example.thankyoutree.retrofit.NotesApi
 import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_helper.*
 import kotlinx.android.synthetic.main.activity_humble.*
 import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.loader_layout.*

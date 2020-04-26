@@ -24,12 +24,12 @@ class NotesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.setTitle("Thank You Notes")
         return inflater.inflate(R.layout.activity_show_notes, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        showLoadingView()
         callApi()
     }
 
@@ -38,16 +38,19 @@ class NotesFragment : Fragment() {
             .getAllNotes()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLoadingView()
+            }
             .subscribe(
                 { notes ->
-                    (activity as MainActivity).hideLoadingView()
+                    hideLoadingView()
                     Log.v("boom", "working fine")
                     view?.let {
                         myAdapter = CustomArrayAdapter(it.context, 0, notes)
                     }
                     list_view_id.adapter = myAdapter
                 }, {
-                    (activity as MainActivity).hideLoadingView()
+                    hideLoadingView()
                     Toast.makeText(
                         activity, "please check your internet connection",
                         Toast.LENGTH_SHORT
@@ -57,11 +60,11 @@ class NotesFragment : Fragment() {
             )
     }
 
-     fun hideLoadingView() {
+    fun hideLoadingView() {
         loadingProgressBar.visibility = View.GONE
     }
 
-     fun showLoadingView() {
+    fun showLoadingView() {
         loadingProgressBar.visibility = View.VISIBLE
     }
 }

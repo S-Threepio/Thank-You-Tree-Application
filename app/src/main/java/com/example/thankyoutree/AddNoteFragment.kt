@@ -58,16 +58,12 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View, AdapterView.OnItemSel
         imm.hideSoftInputFromWindow(input.windowToken, 0)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.setTitle("Add Your Note")
         return inflater.inflate(R.layout.activity_add_note, container, false)
     }
 
@@ -82,7 +78,7 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View, AdapterView.OnItemSel
             }
             .subscribe(
                 {
-                    activity?.replace(NotesFragment())
+                    activity?.replace(NotesFragment(),withStateLoss = false)
                     hideLoadingView()
                 }, {
                     Log.v("boom", it.message)

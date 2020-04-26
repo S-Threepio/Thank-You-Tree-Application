@@ -13,8 +13,7 @@ import com.example.thankyoutree.retrofit.NotesApi
 import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_helper.*
-import kotlinx.android.synthetic.main.activity_landing.*
+import kotlinx.android.synthetic.main.activity_humble.*
 import kotlinx.android.synthetic.main.loader_layout.*
 import retrofit2.Retrofit
 
@@ -33,7 +32,7 @@ class HelperFragment : Fragment(), TreeBaseContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.activity_helper, container, false)
+        return inflater.inflate(R.layout.activity_humble, container, false)
     }
 
     private fun callApi() {
@@ -55,7 +54,7 @@ class HelperFragment : Fragment(), TreeBaseContract.View {
                         )
                     }
 
-                    helper_view.adapter = myAdapter
+                    humble_view.adapter = myAdapter
                     hideLoadingView()
                 }, {
                     hideLoadingView()

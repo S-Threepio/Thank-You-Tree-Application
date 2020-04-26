@@ -16,6 +16,7 @@ class DashBoardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.setTitle("DashBoard")
         return inflater.inflate(R.layout.activity_dashboard, container, false)
     }
 
