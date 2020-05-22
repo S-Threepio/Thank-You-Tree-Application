@@ -7,11 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
+import com.example.thankyoutree.extensions.add
 import com.example.thankyoutree.extensions.replace
 import com.example.thankyoutree.model.Request
 import com.example.thankyoutree.retrofit.NotesApi
@@ -51,12 +49,22 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View, AdapterView.OnItemSel
                 )
             }
         }
+        fromSpinner.setSelection(0)
+        toSpinner.setSelection(0)
+        view?.findViewById<TextView>(R.id.editNote)?.setText("")
+        view?.findViewById<TextView>(R.id.editNote)?.setHint("Write you note")
     }
 
     protected fun hideSoftKeyboard(input: EditText) {
         val imm = activity?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(input.windowToken, 0)
     }
+
+    override fun onResume() {
+        super.onResume()
+
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,7 +86,7 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View, AdapterView.OnItemSel
             }
             .subscribe(
                 {
-                    activity?.replace(NotesFragment(),withStateLoss = false)
+                    activity?.replace(NotesFragment())
                     hideLoadingView()
                 }, {
                     Log.v("boom", it.message)

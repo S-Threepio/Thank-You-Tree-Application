@@ -34,12 +34,11 @@ class LandingFragment : Fragment(), TreeBaseContract.View {
         super.onViewCreated(view, savedInstanceState)
         var notes = ""
         add.setOnClickListener {
-            showLoadingView()
             callApi()
         }
         show.setOnClickListener {
-           // showLoadingView()
-           activity?.replace(NotesFragment())
+            // showLoadingView()
+            activity?.replace(NotesFragment())
         }
         dashboard.setOnClickListener {
             activity?.replace(DashBoardFragment())
@@ -51,11 +50,14 @@ class LandingFragment : Fragment(), TreeBaseContract.View {
             .getListOfNames()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLoadingView()
+            }
             .subscribe(
                 {
-                    activity?.replace(AddNoteFragment.newInstance(it.names),withStateLoss = false)
+                    replace(AddNoteFragment.newInstance(it.names))
                 }, {
-                    (activity as MainActivity).hideLoadingView()
+                    hideLoadingView()
                     Toast.makeText(
                         activity, "please check your internet connection",
                         Toast.LENGTH_SHORT
