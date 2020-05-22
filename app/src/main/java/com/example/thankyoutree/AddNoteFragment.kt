@@ -52,7 +52,7 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View, AdapterView.OnItemSel
         fromSpinner.setSelection(0)
         toSpinner.setSelection(0)
         view?.findViewById<TextView>(R.id.editNote)?.setText("")
-        view?.findViewById<TextView>(R.id.editNote)?.setHint("Write you note")
+        view?.findViewById<TextView>(R.id.editNote)?.setHint("Write your thank you note")
     }
 
     protected fun hideSoftKeyboard(input: EditText) {
@@ -89,7 +89,7 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View, AdapterView.OnItemSel
                     activity?.replace(NotesFragment())
                     hideLoadingView()
                 }, {
-                    Log.v("boom", it.message)
+                    Log.v("error for adding a note", it.message)
                     hideLoadingView()
                     Toast.makeText(
                         activity,

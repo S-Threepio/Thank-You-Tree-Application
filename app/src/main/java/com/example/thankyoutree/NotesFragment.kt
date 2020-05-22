@@ -44,7 +44,7 @@ class NotesFragment : Fragment() {
             .subscribe(
                 { notes ->
                     hideLoadingView()
-                    Log.v("boom", "working fine")
+                    Log.v("boom", "notes working fine")
                     view?.let {
                         myAdapter = CustomArrayAdapter(it.context, 0, notes)
                     }
@@ -55,7 +55,7 @@ class NotesFragment : Fragment() {
                         activity, "please check your internet connection",
                         Toast.LENGTH_SHORT
                     ).show()
-                    Log.v("boom", it.message)
+                    Log.v("error", it.message)
                 }
             )
     }
