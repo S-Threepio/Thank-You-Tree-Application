@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.thankyoutree.extensions.add
+import com.example.thankyoutree.extensions.replace
 import kotlinx.android.synthetic.main.loader_layout.*
 
 
@@ -14,7 +15,7 @@ class MainActivity : AppCompatActivity(), TreeBaseContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        add(LandingFragment())
+        add(LandingFragment(), addToBackStack = false)
     }
 
     override fun hideLoadingView() {
@@ -36,7 +37,6 @@ class MainActivity : AppCompatActivity(), TreeBaseContract.View {
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount != 1)
             super.onBackPressed()
     }
 }

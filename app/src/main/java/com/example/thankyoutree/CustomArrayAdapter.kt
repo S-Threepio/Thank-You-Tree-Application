@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.list_item_layout.view.*
 class CustomArrayAdapter(context: Context, layout: Int, val myList: Array<Note>) :
     ArrayAdapter<Note>(context, layout, myList) {
 
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val listItemView = convertView ?: LayoutInflater.from(context).inflate(
             R.layout.list_item_layout,
