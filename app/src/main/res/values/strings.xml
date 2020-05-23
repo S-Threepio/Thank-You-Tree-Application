@@ -8,4 +8,6 @@
         <item>Four</item>
         <item>Five</item>
     </string-array>
+
+    <string name="thank_you_note_label">Write your thank you note</string>
 </resources>
