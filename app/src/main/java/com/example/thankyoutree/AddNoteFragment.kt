@@ -129,8 +129,8 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
     }
 
     private fun addNewNote(from: String, noteData: String, to: String) {
-        var fromData = ""
-        var toData = ""
+        var fromData = from
+        var toData = to
         if (from.equals("")) {
             fromData = "-"
         }
@@ -141,7 +141,7 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
         val request = Request(toData, fromData, noteData)
 
         retrofitRepositoryImpl.create(NotesApi::class.java)
-            .getAllNotes()
+            .addNote(request)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
