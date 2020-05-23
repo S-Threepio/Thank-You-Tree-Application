@@ -10,7 +10,7 @@
 
     <ListView
         android:layout_marginTop="10dp"
-        android:id="@+id/humble_view"
+        android:id="@+id/data_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@null" />

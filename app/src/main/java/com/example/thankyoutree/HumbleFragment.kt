@@ -7,18 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.thankyoutree.extensions.replace
 import com.example.thankyoutree.model.Note
 import com.example.thankyoutree.model.Person
 import com.example.thankyoutree.retrofit.NotesApi
 import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_humble.*
-import kotlinx.android.synthetic.main.activity_landing.*
+import kotlinx.android.synthetic.main.dashboard_data.*
 import kotlinx.android.synthetic.main.loader_layout.*
 import retrofit2.Retrofit
 
-class HumbleFragment : Fragment(),TreeBaseContract.View {
+class HumbleFragment : Fragment(), TreeBaseContract.View {
     val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
     lateinit var myAdapter: DashboardAdapter
 
@@ -26,6 +26,16 @@ class HumbleFragment : Fragment(),TreeBaseContract.View {
         super.onViewCreated(view, savedInstanceState)
         activity?.setTitle("Most Thank You Given")
         callApi()
+
+        data_list.setOnItemClickListener { parent, view, position, id ->
+            myAdapter.getItem(position)?.apply {
+                val name = name
+                val count = count.toString()
+                replace(ReceiptFragment.newInstance(name, count, "giving"))
+            }
+        }
+
+
     }
 
     override fun onCreateView(
@@ -33,7 +43,7 @@ class HumbleFragment : Fragment(),TreeBaseContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.activity_humble, container, false)
+        return inflater.inflate(R.layout.dashboard_data, container, false)
     }
 
     private fun callApi() {
@@ -56,7 +66,7 @@ class HumbleFragment : Fragment(),TreeBaseContract.View {
                     }
                     hideLoadingView()
 
-                    humble_view.adapter = myAdapter
+                    data_list.adapter = myAdapter
                     loadingProgressBar.visibility = View.GONE
                 }, {
                     hideLoadingView()
@@ -99,4 +109,5 @@ class HumbleFragment : Fragment(),TreeBaseContract.View {
     override fun showLoadingView() {
         loadingProgressBar.visibility = View.VISIBLE
     }
+
 }
