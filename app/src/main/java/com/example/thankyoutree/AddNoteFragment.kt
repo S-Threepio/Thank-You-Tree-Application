@@ -123,7 +123,7 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
                     activity?.replace(NotesFragment())
                     hideLoadingView()
 
-                    // Clear views only in case of success;
+                    // Clear views only in case of success.
                     // since we have already moved to next screen,
                     // it's less likely you'll find a glitch
                     clearViews()
