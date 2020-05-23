@@ -48,7 +48,7 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
                             } else {
                                 text.let {
                                     if (it.isBlank() || !(arrayNames.contains(it.toString()))) {
-                                        setText("-")
+                                        setText("")
                                     }
                                 }
                             }
@@ -59,13 +59,11 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
                         threshold = 1
                         setOnFocusChangeListener { v, hasFocus ->
                             if (hasFocus) {
-                                if (text.toString() == "-")
-                                    setText("")
                                 showDropDown()
                             } else {
                                 text.let {
-                                    if (it.isBlank() || !(arrayNames.contains(it.toString()))) {
-                                        setText("-")
+                                    if (!(arrayNames.contains(it.toString()))) {
+                                        setText("")
                                     }
                                 }
                             }
@@ -101,7 +99,16 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
     }
 
     private fun addNewNote(from: String, noteData: String, to: String) {
-        val request = Request(to, from, noteData)
+        var fromData = ""
+        var toData = ""
+        if (from.equals("")) {
+            fromData = "-"
+        }
+        if (to.equals("")) {
+            toData = "-"
+        }
+
+        val request = Request(toData, fromData, noteData)
         retrofitRepositoryImpl.create(NotesApi::class.java)
             .getAllNotes()
             .subscribeOn(Schedulers.io())
@@ -142,6 +149,14 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
 
     override fun showLoadingView() {
         loadingProgressBar.visibility = View.VISIBLE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fromSpinner.setText("")
+        toSpinner.setText("")
+        editNote.setText("")
+        editNote.setHint("Write your thank you note")
     }
 }
 
