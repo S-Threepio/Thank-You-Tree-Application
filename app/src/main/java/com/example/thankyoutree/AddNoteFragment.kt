@@ -2,8 +2,6 @@ package com.example.thankyoutree
 
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +11,13 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.thankyoutree.extensions.addTo
 import com.example.thankyoutree.extensions.replace
 import com.example.thankyoutree.model.Request
 import com.example.thankyoutree.retrofit.NotesApi
 import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_add_note.*
 import kotlinx.android.synthetic.main.loader_layout.*
@@ -26,7 +26,8 @@ import retrofit2.Retrofit
 class AddNoteFragment : Fragment(), TreeBaseContract.View {
 
     lateinit var adapter: ArrayAdapter<String>
-    val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
+    private val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
+    private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,6 +110,7 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
         }
 
         val request = Request(toData, fromData, noteData)
+
         retrofitRepositoryImpl.create(NotesApi::class.java)
             .getAllNotes()
             .subscribeOn(Schedulers.io())
@@ -120,8 +122,13 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
                 {
                     activity?.replace(NotesFragment())
                     hideLoadingView()
+
+                    // Clear views only in case of success;
+                    // since we have already moved to next screen,
+                    // it's less likely you'll find a glitch
+                    clearViews()
                 }, {
-                    Log.v("error for adding a note", it.message)
+                    Log.v("error for adding a note", it.message ?: "No message from exception")
                     hideLoadingView()
                     Toast.makeText(
                         activity,
@@ -129,11 +136,13 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            )
+            ).addTo(compositeDisposable)
     }
 
 
     companion object {
+        private const val EMPTY_STRING = ""
+
         fun newInstance(names: String): AddNoteFragment {
             val frag = AddNoteFragment()
             val myArgs = Bundle()
@@ -151,12 +160,13 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
         loadingProgressBar.visibility = View.VISIBLE
     }
 
-    override fun onResume() {
-        super.onResume()
-        fromSpinner.setText("")
-        toSpinner.setText("")
-        editNote.setText("")
-        editNote.setHint("Write your thank you note")
+    private fun clearViews() {
+        fromSpinner.setText(EMPTY_STRING)
+        toSpinner.setText(EMPTY_STRING)
+        editNote.apply {
+            setText(EMPTY_STRING)
+            hint = getString(R.string.thank_you_note_label)
+        }
     }
 }
 
