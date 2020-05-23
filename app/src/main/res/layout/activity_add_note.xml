@@ -16,10 +16,10 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:gravity="center"
+            android:layout_weight="1"
             android:paddingHorizontal="10dp"
             android:text="To : "
             android:textSize="20sp"
@@ -27,9 +27,10 @@
 
         <AutoCompleteTextView
             android:id="@+id/toSpinner"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:layout_weight="3"
             android:gravity="center"
             android:textAlignment="center" />
     </LinearLayout>
@@ -38,8 +39,10 @@
         android:id="@+id/editNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginHorizontal="20dp"
+        android:layout_margin="20dp"
+        android:padding="10dp"
+        android:paddingHorizontal="10dp"
+
         android:hint="Write your thank you note"
         android:lineSpacingExtra="3sp" />
 
@@ -50,10 +53,10 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:gravity="center"
+            android:layout_weight="1"
             android:paddingHorizontal="10dp"
             android:text="From : "
             android:textSize="20sp"
@@ -61,9 +64,10 @@
 
         <AutoCompleteTextView
             android:id="@+id/fromSpinner"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:layout_weight="3"
             android:gravity="center"
             android:textAlignment="center" />
     </LinearLayout>

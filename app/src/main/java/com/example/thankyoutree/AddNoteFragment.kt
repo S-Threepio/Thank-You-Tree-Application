@@ -26,50 +26,81 @@ import retrofit2.Retrofit
 class AddNoteFragment : Fragment(), TreeBaseContract.View {
 
     lateinit var adapter: ArrayAdapter<String>
+    lateinit var fromAdapter: ArrayAdapter<String>
+    lateinit var toAdapter: ArrayAdapter<String>
+
     val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val arrayNames: Array<String>? =
-            this.arguments?.getString("names")?.split(",")?.toTypedArray()
-
+        var listOfNames = this.arguments?.getString("names")?.split(",")?.toMutableList()
+        var arrayNames: Array<String>? = listOfNames?.toTypedArray()
         arrayNames?.let {
             adapter =
                 ArrayAdapter<String>(view.context, R.layout.spinner_layout, arrayNames).also {
                     it.setDropDownViewResource(R.layout.spinner_layout)
-                    fromSpinner.apply {
-                        setAdapter(it)
-                        threshold = 1
-                        setOnFocusChangeListener { v, hasFocus ->
-                            if (hasFocus) {
-                                showDropDown()
-
-                            } else {
-                                text.let {
-                                    if (it.isBlank() || !(arrayNames.contains(it.toString()))) {
-                                        setText("")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    toSpinner.apply {
-                        setAdapter(it)
-                        threshold = 1
-                        setOnFocusChangeListener { v, hasFocus ->
-                            if (hasFocus) {
-                                showDropDown()
-                            } else {
-                                text.let {
-                                    if (!(arrayNames.contains(it.toString()))) {
-                                        setText("")
+                }
+            fromAdapter = adapter
+            toAdapter = adapter
+            fromAdapter.also {
+                fromSpinner.apply {
+                    setAdapter(it)
+                    threshold = 1
+                    setOnFocusChangeListener { v, hasFocus ->
+                        if (hasFocus) {
+                            showDropDown()
+                        } else {
+                            text.let {
+                                if (it.isBlank() || !(arrayNames.contains(it.toString()))) {
+                                    setText("")
+                                } else if (it.isNotBlank()) {
+                                    listOfNames = arrayNames.toMutableList()
+                                    listOfNames?.remove(it.toString())
+                                    var toArrayNames = listOfNames?.toTypedArray() ?: arrayNames
+                                    toAdapter = ArrayAdapter<String>(
+                                        view.context,
+                                        R.layout.spinner_layout,
+                                        toArrayNames
+                                    ).also {
+                                        it.setDropDownViewResource(R.layout.spinner_layout)
+                                        toSpinner.setAdapter(it)
                                     }
                                 }
                             }
                         }
                     }
                 }
+            }
+            toAdapter.also {
+                toSpinner.apply {
+                    setAdapter(it)
+                    threshold = 1
+                    setOnFocusChangeListener { v, hasFocus ->
+                        if (hasFocus) {
+                            showDropDown()
+                        } else {
+                            text.let {
+                                if (!(arrayNames.contains(it.toString()))) {
+                                    setText("")
+                                } else if (it.isNotBlank()) {
+                                    listOfNames = arrayNames.toMutableList()
+                                    listOfNames?.remove(it.toString())
+                                    var fromArrayNames = listOfNames?.toTypedArray() ?: arrayNames
+                                    fromAdapter = ArrayAdapter<String>(
+                                        view.context,
+                                        R.layout.spinner_layout,
+                                        fromArrayNames
+                                    ).also {
+                                        it.setDropDownViewResource(R.layout.spinner_layout)
+                                        fromSpinner.setAdapter(it)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         addNoteButton.setOnClickListener {
             hideSoftKeyboard(editNote)
