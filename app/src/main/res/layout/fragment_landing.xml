@@ -1,55 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/treebit"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    <data>
 
-    <include layout="@layout/loader_layout" />
+        <variable
+            name="landingFragment"
+            type="com.example.thankyoutree.landing.LandingFragment" />
+    </data>
 
-    <TextView
-        android:id="@+id/add"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#CBFFFFFF"
-        android:onClick="@{landingViewModel::onClickAddNote}"
-        android:paddingVertical="5dp"
-        android:text="Add a Thank You note"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:background="@drawable/treebit"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/show"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginVertical="20dp"
-        android:background="#CBFFFFFF"
-        android:padding="5dp"
-        android:text="Show Thank You tree"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        <include layout="@layout/loader_layout" />
 
-    <TextView
-        android:id="@+id/dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#CBFFFFFF"
-        android:paddingVertical="5dp"
-        android:text="Dashboard"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#CBFFFFFF"
+            android:onClick="@{landingFragment::onClickAddNote}"
+            android:paddingVertical="5dp"
+            android:text="Add a Thank You note"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="20dp"
+            android:background="#CBFFFFFF"
+            android:padding="5dp"
+            android:text="Show Thank You tree"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#CBFFFFFF"
+            android:paddingVertical="5dp"
+            android:text="Dashboard"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
 
-</LinearLayout>
+    </LinearLayout>
+</layout>
