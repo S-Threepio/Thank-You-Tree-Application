@@ -11,8 +11,7 @@ import com.example.thankyoutree.retrofit.NotesApi
 import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_landing.*
-import kotlinx.android.synthetic.main.activity_show_notes.*
+import kotlinx.android.synthetic.main.fragment_show_notes.*
 import kotlinx.android.synthetic.main.loader_layout.*
 import retrofit2.Retrofit
 
@@ -25,7 +24,7 @@ class NotesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         activity?.setTitle("Thank You Notes")
-        return inflater.inflate(R.layout.activity_show_notes, container, false)
+        return inflater.inflate(R.layout.fragment_show_notes, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

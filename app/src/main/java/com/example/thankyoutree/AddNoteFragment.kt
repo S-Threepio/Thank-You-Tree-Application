@@ -19,7 +19,7 @@ import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_add_note.*
+import kotlinx.android.synthetic.main.fragment_add_note.*
 import kotlinx.android.synthetic.main.loader_layout.*
 import retrofit2.Retrofit
 
@@ -125,7 +125,7 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
         savedInstanceState: Bundle?
     ): View? {
         activity?.title = "Add Your Note"
-        return inflater.inflate(R.layout.activity_add_note, container, false)
+        return inflater.inflate(R.layout.fragment_add_note, container, false)
     }
 
     private fun addNewNote(from: String, noteData: String, to: String) {

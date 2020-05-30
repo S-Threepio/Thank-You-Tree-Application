@@ -7,14 +7,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.thankyoutree.extensions.add
-import com.example.thankyoutree.extensions.replace
+import com.example.thankyoutree.landing.LandingFragment
 import kotlinx.android.synthetic.main.loader_layout.*
 
 
 class MainActivity : AppCompatActivity(), TreeBaseContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_landing)
+        setContentView(R.layout.activity_main)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         add(LandingFragment(), addToBackStack = false)
     }
