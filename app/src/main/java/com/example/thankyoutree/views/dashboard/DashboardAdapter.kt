@@ -1,14 +1,13 @@
-package com.example.thankyoutree
+package com.example.thankyoutree.views.dashboard
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import com.example.thankyoutree.model.Note
+import com.example.thankyoutree.R
 import com.example.thankyoutree.model.Person
 import kotlinx.android.synthetic.main.dashboard_item_layout.view.*
-import kotlinx.android.synthetic.main.list_item_layout.view.*
 
 class DashboardAdapter(context: Context, layout: Int, val myList: Array<Person>) :
     ArrayAdapter<Person>(context, layout, myList) {

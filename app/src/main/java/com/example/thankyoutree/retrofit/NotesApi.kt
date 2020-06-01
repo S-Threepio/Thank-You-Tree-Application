@@ -11,9 +11,8 @@ interface NotesApi {
     @GET("dev/notes")
     fun getAllNotes(): Single<Array<Note>>
 
-    @FormUrlEncoded
     @POST("dev/note")
-    fun addNote(@Field("note") note:Request):Single<Note>
+    fun addNote(@Body note:Request):Single<Note>
 
     @GET(value = "dev")
     fun getListOfNames():Single<NamesOfEmployees>

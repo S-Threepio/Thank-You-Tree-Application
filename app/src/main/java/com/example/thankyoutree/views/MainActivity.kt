@@ -1,4 +1,4 @@
-package com.example.thankyoutree
+package com.example.thankyoutree.views
 
 import android.os.Bundle
 import android.os.Handler
@@ -6,12 +6,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.thankyoutree.R
+import com.example.thankyoutree.TreeBaseContract
 import com.example.thankyoutree.extensions.add
-import com.example.thankyoutree.landing.LandingFragment
+import com.example.thankyoutree.views.landing.LandingFragment
 import kotlinx.android.synthetic.main.loader_layout.*
 
 
-class MainActivity : AppCompatActivity(), TreeBaseContract.View {
+class MainActivity : AppCompatActivity(),
+    TreeBaseContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
