@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.thankyoutree.R
 import com.example.thankyoutree.views.receipt.ReceiptFragment
 import com.example.thankyoutree.TreeBaseContract
+import com.example.thankyoutree.extensions.add
 import com.example.thankyoutree.views.dashboard.DashboardAdapter
 import com.example.thankyoutree.extensions.replace
 import com.example.thankyoutree.model.liveDataReponses.PersonListResponse
@@ -32,7 +33,7 @@ class HelperFragment : Fragment(),
             myAdapter.getItem(position)?.apply {
                 val name = name
                 val count = count.toString()
-                replace(
+                add(
                     ReceiptFragment.newInstance(
                         name,
                         count,
