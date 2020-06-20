@@ -171,7 +171,6 @@ class AddNoteFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         activity?.title = "Add Your Note"
-        activity?.setTitle("Thank You Tree")
         fragmentAddNoteBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_note, container, false)
         fragmentAddNoteBinding.addNoteFragment = this

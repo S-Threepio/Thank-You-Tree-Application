@@ -78,9 +78,7 @@ class HumbleViewModel : ViewModel() {
             if (!flag)
                 countingData.add(Person(note.from, 1))
         }
-        val arrayOfData = arrayOfNulls<Person>(countingData.size)
-
-        countingData.toArray(arrayOfData).sort()
-        return countingData.toArray(arrayOfData)
+        val arrayOfData: Array<Person> = countingData.toTypedArray<Person>().also { it.sort() }
+        return arrayOfData
     }
 }
