@@ -1,111 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+<layout>
 
-    <include layout="@layout/loader_layout" />
+    <data>
 
-    <LinearLayout
+        <variable
+            name="addNoteFragment"
+            type="com.example.thankyoutree.views.add.AddNoteFragment" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".views.MainActivity">
 
-        <TextView
-            android:layout_width="0dp"
+        <include layout="@layout/loader_layout" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:paddingHorizontal="10dp"
-            android:text="To : "
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <AutoCompleteTextView
-            android:id="@+id/toSpinner"
-            android:layout_width="0dp"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:paddingHorizontal="10dp"
+                android:text="To : "
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <AutoCompleteTextView
+                android:id="@+id/toSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editNote"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:textAlignment="center" />
-    </LinearLayout>
+            android:layout_margin="20dp"
+            android:hint="Write your thank you note"
+            android:lineSpacingExtra="3sp"
 
-    <EditText
-        android:id="@+id/editNote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:padding="10dp"
-        android:paddingHorizontal="10dp"
-
-        android:hint="Write your thank you note"
-        android:lineSpacingExtra="3sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:paddingHorizontal="10dp"
-            android:text="From : "
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <AutoCompleteTextView
-            android:id="@+id/fromSpinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:textAlignment="center" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/addNoteButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Add Thank You"
-        android:textSize="15sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_margin="10dp"
-        android:background="#8FFFC107"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="!"
-            android:textColor="#000000"
-            android:textSize="50sp" />
+            android:paddingHorizontal="10dp" />
 
-        <TextView
-            android:id="@+id/disclaimer"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:paddingHorizontal="10dp"
+                android:text="From : "
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <AutoCompleteTextView
+                android:id="@+id/fromSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/addNoteButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:lineSpacingExtra="3sp"
-            android:padding="10dp"
-            android:text="The Thank You note wont be added if its empty.\nIf From/To field is kept empty (-) then that field wont be counted for dashboard however the fields which are filled are countable for dashboard"
-            android:textColor="#000000"
+            android:onClick="@{addNoteFragment::onClickAddNote}"
+            android:text="Add Thank You"
             android:textSize="15sp" />
-    </LinearLayout>
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_margin="10dp"
+            android:background="#8FFFC107"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="!"
+                android:textColor="#000000"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/disclaimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:lineSpacingExtra="3sp"
+                android:padding="10dp"
+                android:text="The Thank You note wont be added if its empty.\nIf From/To field is kept empty (-) then that field wont be counted for dashboard however the fields which are filled are countable for dashboard"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

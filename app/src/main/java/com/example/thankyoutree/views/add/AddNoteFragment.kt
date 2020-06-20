@@ -1,4 +1,4 @@
-package com.example.thankyoutree
+package com.example.thankyoutree.views.add
 
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
@@ -10,26 +10,34 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.example.thankyoutree.extensions.addTo
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.thankyoutree.R
+import com.example.thankyoutree.TreeBaseContract
+import com.example.thankyoutree.databinding.FragmentAddNoteBinding
 import com.example.thankyoutree.extensions.replace
-import com.example.thankyoutree.model.Request
-import com.example.thankyoutree.retrofit.NotesApi
+import com.example.thankyoutree.model.liveDataReponses.AddNotesResponse
+import com.example.thankyoutree.model.liveDataReponses.Status
+import com.example.thankyoutree.views.notes.NotesFragment
 import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.example.thankyoutree.views.landing.AddNoteViewModelFactory
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_add_note.*
 import kotlinx.android.synthetic.main.loader_layout.*
 import retrofit2.Retrofit
 
-class AddNoteFragment : Fragment(), TreeBaseContract.View {
+class AddNoteFragment : Fragment(),
+    TreeBaseContract.View {
 
     lateinit var adapter: ArrayAdapter<String>
     private val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
     private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
     lateinit var fromAdapter: ArrayAdapter<String>
     lateinit var toAdapter: ArrayAdapter<String>
+    lateinit var fragmentAddNoteBinding: FragmentAddNoteBinding
+    lateinit var addNoteViewModel: AddNoteViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,7 +45,10 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
         var arrayNames: Array<String>? = listOfNames?.toTypedArray()
         arrayNames?.let {
             adapter =
-                ArrayAdapter<String>(view.context, R.layout.spinner_layout, arrayNames).also {
+                ArrayAdapter<String>(
+                    view.context,
+                    R.layout.spinner_layout, arrayNames
+                ).also {
                     it.setDropDownViewResource(R.layout.spinner_layout)
                 }
             fromAdapter = adapter
@@ -101,15 +112,16 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
                 }
             }
         }
-        addNoteButton.setOnClickListener {
-            hideSoftKeyboard(editNote)
-            if (editNote.text.toString().isNotEmpty()) {
-                addNewNote(
-                    fromSpinner.text.toString(),
-                    editNote.text.toString(),
-                    toSpinner.text.toString()
-                )
-            }
+    }
+
+    fun onClickAddNote(view: View) {
+        hideSoftKeyboard(editNote)
+        if (editNote.text.toString().isNotEmpty()) {
+            addNoteViewModel.callApi(
+                from = fromSpinner.text.toString(),
+                noteData = editNote.text.toString(),
+                to = toSpinner.text.toString()
+            )
         }
     }
 
@@ -118,6 +130,40 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
         imm.hideSoftInputFromWindow(input.windowToken, 0)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        addNoteViewModel = ViewModelProvider(
+            this,
+            AddNoteViewModelFactory()
+        ).get(AddNoteViewModel::class.java)
+        addNoteViewModel.addNoteLiveData.observe(this, Observer {
+            processResponse(it)
+        })
+    }
+
+    private fun processResponse(response: AddNotesResponse) {
+        when (response.status) {
+            Status.LOADING -> showLoadingView()
+            Status.SUCCESS -> {
+                activity?.replace(NotesFragment())
+                hideLoadingView()
+
+                // Clear views only in case of success.
+                // since we have already moved to next screen,
+                // it's less likely you'll find a glitch
+                clearViews()
+            }
+            Status.ERROR -> {
+                hideLoadingView()
+                Toast.makeText(
+                    activity, "please check your internet connection",
+                    Toast.LENGTH_SHORT
+                ).show()
+                Log.v("boom", response.error?.message.toString())
+            }
+
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -125,49 +171,12 @@ class AddNoteFragment : Fragment(), TreeBaseContract.View {
         savedInstanceState: Bundle?
     ): View? {
         activity?.title = "Add Your Note"
-        return inflater.inflate(R.layout.fragment_add_note, container, false)
+        activity?.setTitle("Thank You Tree")
+        fragmentAddNoteBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_note, container, false)
+        fragmentAddNoteBinding.addNoteFragment = this
+        return fragmentAddNoteBinding.root
     }
-
-    private fun addNewNote(from: String, noteData: String, to: String) {
-        var fromData = from
-        var toData = to
-        if (from.equals("")) {
-            fromData = "-"
-        }
-        if (to.equals("")) {
-            toData = "-"
-        }
-
-        val request = Request(toData, fromData, noteData)
-
-        retrofitRepositoryImpl.create(NotesApi::class.java)
-            .addNote(request)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                showLoadingView()
-            }
-            .subscribe(
-                {
-                    activity?.replace(NotesFragment())
-                    hideLoadingView()
-
-                    // Clear views only in case of success.
-                    // since we have already moved to next screen,
-                    // it's less likely you'll find a glitch
-                    clearViews()
-                }, {
-                    Log.v("error for adding a note", it.message ?: "No message from exception")
-                    hideLoadingView()
-                    Toast.makeText(
-                        activity,
-                        "please check your internet connection",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            ).addTo(compositeDisposable)
-    }
-
 
     companion object {
         private const val EMPTY_STRING = ""

@@ -1,4 +1,4 @@
-package com.example.thankyoutree
+package com.example.thankyoutree.views.receipt
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -9,6 +9,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import com.example.thankyoutree.R
 import kotlinx.android.synthetic.main.fragment_receipt.*
 import java.io.File
 import java.io.FileOutputStream

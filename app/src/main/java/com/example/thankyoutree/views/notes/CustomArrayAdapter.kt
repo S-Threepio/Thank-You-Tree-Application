@@ -1,10 +1,11 @@
-package com.example.thankyoutree
+package com.example.thankyoutree.views.notes
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.example.thankyoutree.R
 import com.example.thankyoutree.model.Note
 import kotlinx.android.synthetic.main.list_item_layout.view.*
 
