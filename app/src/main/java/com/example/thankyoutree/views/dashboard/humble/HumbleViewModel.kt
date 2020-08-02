@@ -1,8 +1,8 @@
 package com.example.thankyoutree.dashboard.helper
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.thankyoutree.extensions.addTo
 import com.example.thankyoutree.model.Note
 import com.example.thankyoutree.model.Notes
 import com.example.thankyoutree.model.Person
@@ -10,33 +10,36 @@ import com.example.thankyoutree.model.liveDataReponses.PersonListResponse
 import com.example.thankyoutree.model.liveDataReponses.Status
 import com.example.thankyoutree.retrofit.NotesApi
 import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
 import retrofit2.Retrofit
 
 
 class HumbleViewModel : ViewModel() {
     val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
-    private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
+    private var _humbleLiveData = MutableLiveData<PersonListResponse>()
+    val humbleLiveData : LiveData<PersonListResponse>
+        get() = _humbleLiveData
+    val viewModelJob = Job()
+    val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    var humbleLiveData = MutableLiveData<PersonListResponse>()
-
-    fun callApi() {
-        retrofitRepositoryImpl.create(NotesApi::class.java)
-            .getAllNotes()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                humbleLiveData.value = loading()
+    init {
+        uiScope.launch {
+            _humbleLiveData.value = loading()
+            try {
+                fetchNotes()
+            } catch (e: Throwable) {
+                _humbleLiveData.value = error(e)
             }
-            .subscribe(
-                {
-                    humbleLiveData.value = success(Notes(it))
-                }, {
-                    humbleLiveData.value = error(it)
+        }
+    }
+
+    private suspend fun fetchNotes() {
+        withContext(Dispatchers.IO) {
+            retrofitRepositoryImpl.create(NotesApi::class.java)
+                .getAllNotes().await().apply {
+                    _humbleLiveData.postValue(success(Notes(this)))
                 }
-            ).addTo(compositeDisposable)
+        }
     }
 
     fun loading(): PersonListResponse? {
@@ -80,5 +83,10 @@ class HumbleViewModel : ViewModel() {
         }
         val arrayOfData: Array<Person> = countingData.toTypedArray<Person>().also { it.sort() }
         return arrayOfData
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }

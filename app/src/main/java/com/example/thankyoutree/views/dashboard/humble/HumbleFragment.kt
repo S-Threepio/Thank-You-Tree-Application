@@ -9,47 +9,29 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.thankyoutree.R
-import com.example.thankyoutree.views.receipt.ReceiptFragment
+import androidx.navigation.fragment.findNavController
 import com.example.thankyoutree.TreeBaseContract
-import com.example.thankyoutree.views.dashboard.DashboardAdapter
 import com.example.thankyoutree.dashboard.helper.HumbleViewModel
-import com.example.thankyoutree.extensions.add
-import com.example.thankyoutree.extensions.replace
+import com.example.thankyoutree.databinding.DashboardDataBinding
 import com.example.thankyoutree.model.liveDataReponses.PersonListResponse
 import com.example.thankyoutree.model.liveDataReponses.Status
-import kotlinx.android.synthetic.main.dashboard_data.*
+import com.example.thankyoutree.views.dashboard.DashboardAdapter
 import kotlinx.android.synthetic.main.loader_layout.*
 
 class HumbleFragment : Fragment(),
     TreeBaseContract.View {
-    lateinit var myAdapter: DashboardAdapter
     lateinit var humbleViewModel: HumbleViewModel
+    lateinit var binding: DashboardDataBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.setTitle("Most Thank You Given")
-        humbleViewModel.callApi()
-        data_list.setOnItemClickListener { parent, view, position, id ->
-            myAdapter.getItem(position)?.apply {
-                val name = name
-                val count = count.toString()
-                add(
-                    ReceiptFragment.newInstance(
-                        name,
-                        count,
-                        "giving"
-                    )
-                )
-            }
-        }
+        activity?.title = "Most Thank You Given"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         humbleViewModel = ViewModelProvider(
-            this,
-            HumbleViewModelFactory()
+            this
         ).get(HumbleViewModel::class.java)
         humbleViewModel.humbleLiveData.observe(this, Observer {
             processResponse(it)
@@ -61,23 +43,28 @@ class HumbleFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dashboard_data, container, false)
+        binding = DashboardDataBinding.inflate(inflater)
+        humbleViewModel.humbleLiveData.observe(viewLifecycleOwner, Observer {
+            binding.personList = it
+        })
+        binding.lifecycleOwner = this
+        binding.dataList.adapter = DashboardAdapter(DashboardAdapter.DashBoardListener {
+            this.findNavController().navigate(
+                HumbleFragmentDirections.actionHumbleFragmentToReceiptFragment(
+                    it.name,
+                    it.count.toString(),
+                    "giving"
+                )
+            )
+        })
+        return binding.root
     }
 
     private fun processResponse(response: PersonListResponse) {
         when (response.status) {
             Status.LOADING -> showLoadingView()
             Status.SUCCESS -> {
-                response.data?.let {
-                    hideLoadingView()
-                    view?.apply {
-                        myAdapter =
-                            DashboardAdapter(
-                                this.context, 0, it
-                            )
-                    }
-                    data_list.adapter = myAdapter
-                }
+                hideLoadingView()
             }
             Status.ERROR -> {
                 hideLoadingView()
@@ -85,9 +72,8 @@ class HumbleFragment : Fragment(),
                     activity, "please check your internet connection",
                     Toast.LENGTH_SHORT
                 ).show()
-                Log.v("boom", response.error?.message.toString())
+                Log.v("api machine broke", response.error?.message.toString())
             }
-
         }
     }
 

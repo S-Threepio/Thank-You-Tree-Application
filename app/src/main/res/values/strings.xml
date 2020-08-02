@@ -10,4 +10,7 @@
     </string-array>
 
     <string name="thank_you_note_label">Write your thank you note</string>
+
+    <string name="to_item">To :  %1$s</string>
+    <string name="from_item">From :  %1$s</string>
 </resources>

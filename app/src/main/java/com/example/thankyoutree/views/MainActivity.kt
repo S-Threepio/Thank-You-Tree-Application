@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        add(LandingFragment(), addToBackStack = false)
     }
 
     override fun hideLoadingView() {
@@ -30,26 +29,26 @@ class MainActivity : AppCompatActivity(),
         loadingProgressBar.visibility = View.VISIBLE
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private var doubleBackToExitPressedOnce = false
-    override fun onBackPressed() {
-        if (doubleBackToExitPressedOnce || supportFragmentManager.backStackEntryCount != 0) {
-            super.onBackPressed()
-            return
-        }
-
-        this.doubleBackToExitPressedOnce = true
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
-
-        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            android.R.id.home -> {
+//                onBackPressed()
+//                true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
+//
+//    private var doubleBackToExitPressedOnce = false
+//    override fun onBackPressed() {
+//        if (doubleBackToExitPressedOnce || supportFragmentManager.backStackEntryCount != 0) {
+//            super.onBackPressed()
+//            return
+//        }
+//
+//        this.doubleBackToExitPressedOnce = true
+//        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
+//
+//        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+//    }
 }

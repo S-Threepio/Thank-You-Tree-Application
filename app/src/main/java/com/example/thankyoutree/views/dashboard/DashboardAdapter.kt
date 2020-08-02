@@ -1,30 +1,45 @@
 package com.example.thankyoutree.views.dashboard
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import com.example.thankyoutree.R
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.example.thankyoutree.databinding.DashboardItemLayoutBinding
 import com.example.thankyoutree.model.Person
-import kotlinx.android.synthetic.main.dashboard_item_layout.view.*
 
-class DashboardAdapter(context: Context, layout: Int, val myList: Array<Person>) :
-    ArrayAdapter<Person>(context, layout, myList) {
+class DashboardAdapter(val dashBoardListener: DashBoardListener) :
+    ListAdapter<Person, DashboardAdapter.ViewHolder>(DashboardDiffUtils()) {
 
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val dashboardItemView = convertView ?: LayoutInflater.from(context).inflate(
-            R.layout.dashboard_item_layout,
-            parent,
-            false
-        )
-
-        val currentData = getItem(position)
-        dashboardItemView.nameOfThePerson.text=currentData?.name.toString()
-        dashboardItemView.countOfThePerson.text=currentData?.count.toString()
-        return dashboardItemView
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return ViewHolder(DashboardItemLayoutBinding.inflate(inflater, parent, false))
     }
 
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.bind(item, dashBoardListener)
+    }
+
+    class ViewHolder(val binding: DashboardItemLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Person, dashBoardListener: DashBoardListener) {
+            binding.person = item
+            binding.clickListener = dashBoardListener
+            binding.executePendingBindings()
+        }
+    }
+
+    class DashboardDiffUtils : DiffUtil.ItemCallback<Person>() {
+        override fun areItemsTheSame(oldItem: Person, newItem: Person): Boolean =
+            oldItem === newItem
+
+        override fun areContentsTheSame(oldItem: Person, newItem: Person): Boolean =
+            oldItem == newItem
+    }
+
+    class DashBoardListener(val clickListener: (person: Person) -> Unit) {
+        fun onClick(person: Person) = clickListener(person)
+    }
 
 }
