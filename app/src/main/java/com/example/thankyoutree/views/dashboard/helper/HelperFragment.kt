@@ -10,38 +10,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.thankyoutree.R
-import com.example.thankyoutree.views.receipt.ReceiptFragment
 import com.example.thankyoutree.TreeBaseContract
-import com.example.thankyoutree.extensions.add
-import com.example.thankyoutree.views.dashboard.DashboardAdapter
-import com.example.thankyoutree.extensions.replace
+import com.example.thankyoutree.databinding.DashboardDataBinding
 import com.example.thankyoutree.model.liveDataReponses.PersonListResponse
 import com.example.thankyoutree.model.liveDataReponses.Status
-import kotlinx.android.synthetic.main.dashboard_data.*
+import com.example.thankyoutree.views.dashboard.DashboardAdapter
 import kotlinx.android.synthetic.main.loader_layout.*
 
 class HelperFragment : Fragment(),
     TreeBaseContract.View {
-    lateinit var myAdapter: DashboardAdapter
     lateinit var helperViewModel: HelperViewModel
-
+    lateinit var binding: DashboardDataBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.setTitle("Most Thank You Received")
-        data_list.setOnItemClickListener { parent, view, position, id ->
-            myAdapter.getItem(position)?.let {
-                val name = it.name
-                val count = it.count.toString()
-                this.findNavController().navigate(
-                    HelperFragmentDirections.actionHelperFragmentToReceiptFragment(
-                        name,
-                        count,
-                        "receiving"
-                    )
-                )
-            }
-        }
+        activity?.title = "Most Thank You Received"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,13 +42,6 @@ class HelperFragment : Fragment(),
             Status.SUCCESS -> {
                 response.data?.let {
                     hideLoadingView()
-                    view?.apply {
-                        myAdapter =
-                            DashboardAdapter(
-                                this.context, 0, it
-                            )
-                    }
-                    data_list.adapter = myAdapter
                 }
             }
             Status.ERROR -> {
@@ -75,7 +50,7 @@ class HelperFragment : Fragment(),
                     activity, "please check your internet connection",
                     Toast.LENGTH_SHORT
                 ).show()
-                Log.v("boom", response.error?.message.toString())
+                Log.v("api machine broke", response.error?.message.toString())
             }
 
         }
@@ -86,7 +61,22 @@ class HelperFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dashboard_data, container, false)
+        binding = DashboardDataBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        helperViewModel.helperLiveData.observe(viewLifecycleOwner, Observer {
+            binding.personList = it
+        })
+
+        binding.dataList.adapter = DashboardAdapter(DashboardAdapter.DashBoardListener {
+            this.findNavController().navigate(
+                HelperFragmentDirections.actionHelperFragmentToReceiptFragment(
+                    it.name,
+                    it.count.toString(),
+                    "receiving"
+                )
+            )
+        })
+        return binding.root
     }
 
     override fun hideLoadingView() {

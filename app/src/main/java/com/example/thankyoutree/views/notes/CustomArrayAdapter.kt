@@ -1,15 +1,12 @@
 package com.example.thankyoutree.views.notes
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.thankyoutree.R
 import com.example.thankyoutree.databinding.ListItemLayoutBinding
 import com.example.thankyoutree.model.Note
-import kotlinx.android.synthetic.main.list_item_layout.view.*
 
 class CustomArrayAdapter :
     ListAdapter<Note, CustomArrayAdapter.ViewHolder>(CustomDiffUtils()) {
@@ -34,6 +31,4 @@ class CustomArrayAdapter :
         override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean = oldItem === newItem
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean = oldItem == newItem
     }
-
-
 }

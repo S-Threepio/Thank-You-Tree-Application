@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,23 +17,15 @@ import androidx.navigation.fragment.findNavController
 import com.example.thankyoutree.R
 import com.example.thankyoutree.TreeBaseContract
 import com.example.thankyoutree.databinding.FragmentAddNoteBinding
-import com.example.thankyoutree.extensions.replace
 import com.example.thankyoutree.model.liveDataReponses.AddNotesResponse
 import com.example.thankyoutree.model.liveDataReponses.Status
-import com.example.thankyoutree.views.notes.NotesFragment
-import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
-import com.example.thankyoutree.views.landing.AddNoteViewModelFactory
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_add_note.*
 import kotlinx.android.synthetic.main.loader_layout.*
-import retrofit2.Retrofit
 
 class AddNoteFragment : Fragment(),
     TreeBaseContract.View {
 
     lateinit var adapter: ArrayAdapter<String>
-    private val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
-    private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
     lateinit var fromAdapter: ArrayAdapter<String>
     lateinit var toAdapter: ArrayAdapter<String>
     lateinit var fragmentAddNoteBinding: FragmentAddNoteBinding
@@ -134,8 +125,7 @@ class AddNoteFragment : Fragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addNoteViewModel = ViewModelProvider(
-            this,
-            AddNoteViewModelFactory()
+            this
         ).get(AddNoteViewModel::class.java)
         addNoteViewModel.addNoteLiveData.observe(this, Observer {
             processResponse(it)
@@ -146,7 +136,8 @@ class AddNoteFragment : Fragment(),
         when (response.status) {
             Status.LOADING -> showLoadingView()
             Status.SUCCESS -> {
-                this.findNavController().navigate(AddNoteFragmentDirections.actionAddNoteFragmentToNotesFragment())
+                this.findNavController()
+                    .navigate(AddNoteFragmentDirections.actionAddNoteFragmentToNotesFragment())
                 hideLoadingView()
 
                 // Clear views only in case of success.
@@ -160,7 +151,7 @@ class AddNoteFragment : Fragment(),
                     activity, "please check your internet connection",
                     Toast.LENGTH_SHORT
                 ).show()
-                Log.v("boom", response.error?.message.toString())
+                Log.v("api machine broke", response.error?.message.toString())
             }
 
         }
@@ -173,14 +164,13 @@ class AddNoteFragment : Fragment(),
     ): View? {
         activity?.title = "Add Your Note"
         fragmentAddNoteBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_add_note, container, false)
+            FragmentAddNoteBinding.inflate(inflater)
         fragmentAddNoteBinding.addNoteFragment = this
         return fragmentAddNoteBinding.root
     }
 
     companion object {
         private const val EMPTY_STRING = ""
-
         fun newInstance(names: String): AddNoteFragment {
             val frag = AddNoteFragment()
             val myArgs = Bundle()

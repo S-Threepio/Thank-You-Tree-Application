@@ -12,19 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.thankyoutree.TreeBaseContract
 import com.example.thankyoutree.databinding.FragmentLandingBinding
-import com.example.thankyoutree.extensions.replace
 import com.example.thankyoutree.model.liveDataReponses.NamesResponse
 import com.example.thankyoutree.model.liveDataReponses.Status
-import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
-import com.example.thankyoutree.views.add.AddNoteFragment
-import com.example.thankyoutree.views.dashboard.DashBoardFragment
-import com.example.thankyoutree.views.notes.NotesFragment
 import kotlinx.android.synthetic.main.loader_layout.*
-import retrofit2.Retrofit
 
 class LandingFragment : Fragment(),
     TreeBaseContract.View {
-    lateinit var names: List<String>
     lateinit var landingViewModel: LandingViewModel
     lateinit var landingFragmentBinding: FragmentLandingBinding
     override fun onCreateView(
@@ -32,7 +25,7 @@ class LandingFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.setTitle("Thank You Tree")
+        activity?.title = "Thank You Tree"
         landingFragmentBinding = FragmentLandingBinding.inflate(inflater)
         landingFragmentBinding.landingFragment = this
         return landingFragmentBinding.root
@@ -62,7 +55,7 @@ class LandingFragment : Fragment(),
                     activity, "please check your internet connection",
                     Toast.LENGTH_SHORT
                 ).show()
-                Log.v("boom", response.error?.message.toString())
+                Log.v("api machine broke", response.error?.message.toString())
             }
 
         }

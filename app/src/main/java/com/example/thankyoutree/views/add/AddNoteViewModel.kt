@@ -2,29 +2,20 @@ package com.example.thankyoutree.views.add
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.thankyoutree.extensions.addTo
-import com.example.thankyoutree.model.NamesOfEmployees
 import com.example.thankyoutree.model.Request
 import com.example.thankyoutree.model.liveDataReponses.AddNotesResponse
-import com.example.thankyoutree.model.liveDataReponses.NamesResponse
 import com.example.thankyoutree.model.liveDataReponses.Status
 import com.example.thankyoutree.retrofit.NotesApi
 import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import retrofit2.Retrofit
 
 
 class AddNoteViewModel : ViewModel() {
     val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
-    private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
-
     var addNoteLiveData = MutableLiveData<AddNotesResponse>()
     val viewModelJob = Job()
     val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
 
     fun callApi(from: String, to: String, noteData: String) {
         var fromData = from

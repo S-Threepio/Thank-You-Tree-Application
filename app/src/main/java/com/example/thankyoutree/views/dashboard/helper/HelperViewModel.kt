@@ -3,7 +3,6 @@ package com.example.thankyoutree.views.dashboard.helper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.thankyoutree.extensions.addTo
 import com.example.thankyoutree.model.Note
 import com.example.thankyoutree.model.Notes
 import com.example.thankyoutree.model.Person
@@ -11,19 +10,13 @@ import com.example.thankyoutree.model.liveDataReponses.PersonListResponse
 import com.example.thankyoutree.model.liveDataReponses.Status
 import com.example.thankyoutree.retrofit.NotesApi
 import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import retrofit2.Retrofit
 
 
 class HelperViewModel : ViewModel() {
     val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
-    private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
-
     var _helperLiveData = MutableLiveData<PersonListResponse>()
-
     val helperLiveData: LiveData<PersonListResponse>
         get() = _helperLiveData
     val viewModelJob = Job()
