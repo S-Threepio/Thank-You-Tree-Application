@@ -13,6 +13,7 @@ import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
 import retrofit2.Retrofit
 
 
@@ -20,23 +21,29 @@ class NotesViewModel : ViewModel() {
     val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
     private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
 
-    var notesLiveData =MutableLiveData<NotesResponse>()
+    var notesLiveData = MutableLiveData<NotesResponse>()
 
-    fun callApi() {
-        retrofitRepositoryImpl.create(NotesApi::class.java)
-            .getAllNotes()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                notesLiveData.value = loading()
+    val viewModelJob = Job()
+    val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    init {
+        uiScope.launch {
+            notesLiveData.value = loading()
+            try {
+                fetchNotes()
+            }catch (e:Throwable){
+                notesLiveData.value = error(e)
             }
-            .subscribe(
-                {
-                    notesLiveData.value = success(Notes(it))
-                }, {
-                    notesLiveData.value = error(it)
+        }
+    }
+
+    private suspend fun fetchNotes() {
+        withContext(Dispatchers.IO) {
+            retrofitRepositoryImpl.create(NotesApi::class.java)
+                .getAllNotes().await().apply {
+                    notesLiveData.postValue(success(Notes(this)))
                 }
-            ).addTo(compositeDisposable)
+        }
     }
 
     fun loading(): NotesResponse? {

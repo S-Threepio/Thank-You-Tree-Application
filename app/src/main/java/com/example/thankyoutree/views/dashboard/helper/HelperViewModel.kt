@@ -1,5 +1,6 @@
 package com.example.thankyoutree.views.dashboard.helper
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.thankyoutree.extensions.addTo
@@ -13,6 +14,7 @@ import com.example.thankyoutree.retrofit.RetrofitRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
 import retrofit2.Retrofit
 
 
@@ -20,23 +22,31 @@ class HelperViewModel : ViewModel() {
     val retrofitRepositoryImpl: Retrofit = RetrofitRepositoryImpl().get()
     private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
 
-    var helperLiveData = MutableLiveData<PersonListResponse>()
+    var _helperLiveData = MutableLiveData<PersonListResponse>()
 
-    fun callApi() {
-        retrofitRepositoryImpl.create(NotesApi::class.java)
-            .getAllNotes()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                helperLiveData.value = loading()
+    val helperLiveData: LiveData<PersonListResponse>
+        get() = _helperLiveData
+    val viewModelJob = Job()
+    val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    init {
+        uiScope.launch {
+            _helperLiveData.value = loading()
+            try {
+                fetchNotes()
+            } catch (e: Throwable) {
+                _helperLiveData.value = error(e)
             }
-            .subscribe(
-                {
-                    helperLiveData.value = success(Notes(it))
-                }, {
-                    helperLiveData.value = error(it)
+        }
+    }
+
+    private suspend fun fetchNotes() {
+        withContext(Dispatchers.IO) {
+            retrofitRepositoryImpl.create(NotesApi::class.java)
+                .getAllNotes().await().apply {
+                    _helperLiveData.postValue(success(Notes(this)))
                 }
-            ).addTo(compositeDisposable)
+        }
     }
 
     fun loading(): PersonListResponse? {
@@ -82,4 +92,8 @@ class HelperViewModel : ViewModel() {
         return arrayOfData
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
 }

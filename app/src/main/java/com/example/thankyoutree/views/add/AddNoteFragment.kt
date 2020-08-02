@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.thankyoutree.R
 import com.example.thankyoutree.TreeBaseContract
 import com.example.thankyoutree.databinding.FragmentAddNoteBinding
@@ -145,7 +146,7 @@ class AddNoteFragment : Fragment(),
         when (response.status) {
             Status.LOADING -> showLoadingView()
             Status.SUCCESS -> {
-                activity?.replace(NotesFragment())
+                this.findNavController().navigate(AddNoteFragmentDirections.actionAddNoteFragmentToNotesFragment())
                 hideLoadingView()
 
                 // Clear views only in case of success.

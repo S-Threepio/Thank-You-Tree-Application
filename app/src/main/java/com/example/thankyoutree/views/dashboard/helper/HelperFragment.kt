@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.thankyoutree.R
 import com.example.thankyoutree.views.receipt.ReceiptFragment
 import com.example.thankyoutree.TreeBaseContract
@@ -28,13 +29,12 @@ class HelperFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.setTitle("Most Thank You Received")
-        helperViewModel.callApi()
         data_list.setOnItemClickListener { parent, view, position, id ->
-            myAdapter.getItem(position)?.apply {
-                val name = name
-                val count = count.toString()
-                add(
-                    ReceiptFragment.newInstance(
+            myAdapter.getItem(position)?.let {
+                val name = it.name
+                val count = it.count.toString()
+                this.findNavController().navigate(
+                    HelperFragmentDirections.actionHelperFragmentToReceiptFragment(
                         name,
                         count,
                         "receiving"
@@ -47,8 +47,7 @@ class HelperFragment : Fragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         helperViewModel = ViewModelProvider(
-            this,
-            HelperViewModelFactory()
+            this
         ).get(HelperViewModel::class.java)
         helperViewModel.helperLiveData.observe(this, Observer {
             processResponse(it)

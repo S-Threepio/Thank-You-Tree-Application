@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.thankyoutree.R
 import com.example.thankyoutree.views.dashboard.helper.HelperFragment
 import com.example.thankyoutree.views.dashboard.humble.HumbleFragment
@@ -29,11 +30,13 @@ class DashBoardFragment : Fragment() {
     }
 
     fun onClickHelper(view: View) {
-        activity?.replace(HelperFragment())
+        this.findNavController()
+            .navigate(DashBoardFragmentDirections.actionDashBoardFragmentToHelperFragment())
     }
 
     fun onClickHumble(view: View) {
-        activity?.replace(HumbleFragment())
+        this.findNavController()
+            .navigate(DashBoardFragmentDirections.actionDashBoardFragmentToHumbleFragment())
     }
 
 }

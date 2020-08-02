@@ -1,29 +1,38 @@
 package com.example.thankyoutree.views.notes
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.thankyoutree.R
+import com.example.thankyoutree.databinding.ListItemLayoutBinding
 import com.example.thankyoutree.model.Note
 import kotlinx.android.synthetic.main.list_item_layout.view.*
 
-class CustomArrayAdapter(context: Context, layout: Int, val myList: Array<Note>) :
-    ArrayAdapter<Note>(context, layout, myList) {
+class CustomArrayAdapter :
+    ListAdapter<Note, CustomArrayAdapter.ViewHolder>(CustomDiffUtils()) {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val listItemView = convertView ?: LayoutInflater.from(context).inflate(
-            R.layout.list_item_layout,
-            parent,
-            false
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(ListItemLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+    }
 
-        val currentData = getItem(position)
-        listItemView.to.text="To : "+currentData?.to
-        listItemView.noteItem.text=currentData?.noteData
-        listItemView.from.text="From : "+currentData?.from
-        return listItemView
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.bind(item)
+    }
+
+    class ViewHolder(var binding: ListItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Note) {
+            binding.note = item
+            binding.executePendingBindings()
+        }
+    }
+
+    class CustomDiffUtils : DiffUtil.ItemCallback<Note>() {
+        override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean = oldItem === newItem
+        override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean = oldItem == newItem
     }
 
 
