@@ -1,15 +1,11 @@
 package com.example.thankyoutree.views
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.thankyoutree.R
 import com.example.thankyoutree.TreeBaseContract
-import com.example.thankyoutree.extensions.add
-import com.example.thankyoutree.views.landing.LandingFragment
 import kotlinx.android.synthetic.main.loader_layout.*
 
 
@@ -29,19 +25,20 @@ class MainActivity : AppCompatActivity(),
         loadingProgressBar.visibility = View.VISIBLE
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            android.R.id.home -> {
-//                onBackPressed()
-//                true
-//            }
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
-//
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 //    private var doubleBackToExitPressedOnce = false
+//
 //    override fun onBackPressed() {
-//        if (doubleBackToExitPressedOnce || supportFragmentManager.backStackEntryCount != 0) {
+//        if (doubleBackToExitPressedOnce) {
 //            super.onBackPressed()
 //            return
 //        }
