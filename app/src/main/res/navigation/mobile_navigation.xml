@@ -1,65 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_frag"
-    app:startDestination="@id/landingFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_show_notes">
 
     <fragment
-        android:id="@+id/landingFragment"
-        android:name="com.example.thankyoutree.views.landing.LandingFragment"
-        android:label="LandingFragment">
-        <action
-            android:id="@+id/action_landingFragment_to_notesFragment"
-            app:destination="@id/notesFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"
-            app:popUpTo="@id/landingFragment" />
-        <action
-            android:id="@+id/action_landingFragment_to_addNoteFragment"
-            app:destination="@id/addNoteFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"
-            app:popUpTo="@id/landingFragment" />
-        <action
-            android:id="@+id/action_landingFragment_to_dashBoardFragment"
-            app:destination="@id/dashBoardFragment"
-            app:popUpTo="@id/landingFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
-    </fragment>
-    <fragment
-        android:id="@+id/notesFragment"
-        android:name="com.example.thankyoutree.views.notes.NotesFragment"
-        android:label="NotesFragment" />
-    <fragment
-        android:id="@+id/addNoteFragment"
+        android:id="@+id/navigation_add_note"
         android:name="com.example.thankyoutree.views.add.AddNoteFragment"
-        android:label="AddNoteFragment">
-        <action
-            android:id="@+id/action_addNoteFragment_to_notesFragment"
-            app:destination="@id/notesFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
-        <argument
-            android:name="names"
-            app:argType="string" />
-    </fragment>
+        android:label="Add Note"
+        tools:layout="@layout/fragment_add_note" />
+
     <fragment
-        android:id="@+id/dashBoardFragment"
+        android:id="@+id/navigation_show_notes"
+        android:name="com.example.thankyoutree.views.notes.NotesFragment"
+        android:label="Show Notes"
+        tools:layout="@layout/fragment_show_notes" />
+
+    <fragment
+        android:id="@+id/navigation_dash"
         android:name="com.example.thankyoutree.views.dashboard.DashBoardFragment"
         android:label="DashBoardFragment">
         <action
             android:id="@+id/action_dashBoardFragment_to_helperFragment"
             app:destination="@id/helperFragment"
-            app:popUpTo="@id/dashBoardFragment"
+            app:popUpTo="@id/navigation_dash"
             app:enterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_dashBoardFragment_to_humbleFragment"
             app:destination="@id/humbleFragment"
-            app:popUpTo="@id/dashBoardFragment"
+            app:popUpTo="@id/navigation_dash"
             app:enterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/helperFragment"
