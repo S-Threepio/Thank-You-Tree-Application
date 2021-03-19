@@ -21,6 +21,7 @@
             android:id="@+id/list_view_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="?attr/actionBarSize"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:notesList="@{viewModel.notesLiveData}" />
 

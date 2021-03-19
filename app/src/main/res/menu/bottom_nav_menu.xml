@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navigation_add_note"
+        android:icon="@drawable/ic_add"
+        android:title="Add notes" />
+    <item
+        android:id="@+id/navigation_show_notes"
+        android:icon="@drawable/ic_notes"
+        android:title="Notes" />
+
+
+    <item
+        android:id="@+id/navigation_dash"
+        android:icon="@drawable/ic_dashboard"
+        android:title="Dashboard" />
+
+</menu>
