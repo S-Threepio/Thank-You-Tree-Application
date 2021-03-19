@@ -1,5 +1,6 @@
 package com.example.thankyoutree.views.add
 
+import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.util.Log
@@ -13,12 +14,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.example.thankyoutree.R
 import com.example.thankyoutree.TreeBaseContract
 import com.example.thankyoutree.databinding.FragmentAddNoteBinding
 import com.example.thankyoutree.model.liveDataReponses.AddNotesResponse
+import com.example.thankyoutree.model.liveDataReponses.NamesResponse
 import com.example.thankyoutree.model.liveDataReponses.Status
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_add_note.*
 import kotlinx.android.synthetic.main.loader_layout.*
 
@@ -33,12 +35,16 @@ class AddNoteFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var listOfNames = this.arguments?.getString("names")?.split(",")?.toMutableList()
-        var arrayNames: Array<String>? = listOfNames?.toTypedArray()
+        addNoteViewModel.callNamesApi()
+    }
+
+    fun initializeArrray(names: String, context: Context) {
+        var listOfNames = names.split(",").toMutableList()
+        var arrayNames: Array<String>? = listOfNames.toTypedArray()
         arrayNames?.let {
             adapter =
                 ArrayAdapter<String>(
-                    view.context,
+                    context,
                     R.layout.spinner_layout, arrayNames
                 ).also {
                     it.setDropDownViewResource(R.layout.spinner_layout)
@@ -58,10 +64,10 @@ class AddNoteFragment : Fragment(),
                                     setText("")
                                 } else if (it.isNotBlank()) {
                                     listOfNames = arrayNames.toMutableList()
-                                    listOfNames?.remove(it.toString())
-                                    var toArrayNames = listOfNames?.toTypedArray() ?: arrayNames
+                                    listOfNames.remove(it.toString())
+                                    var toArrayNames = listOfNames.toTypedArray()
                                     toAdapter = ArrayAdapter<String>(
-                                        view.context,
+                                        context,
                                         R.layout.spinner_layout,
                                         toArrayNames
                                     ).also {
@@ -87,10 +93,10 @@ class AddNoteFragment : Fragment(),
                                     setText("")
                                 } else if (it.isNotBlank()) {
                                     listOfNames = arrayNames.toMutableList()
-                                    listOfNames?.remove(it.toString())
-                                    var fromArrayNames = listOfNames?.toTypedArray() ?: arrayNames
+                                    listOfNames.remove(it.toString())
+                                    var fromArrayNames = listOfNames.toTypedArray()
                                     fromAdapter = ArrayAdapter<String>(
-                                        view.context,
+                                        context,
                                         R.layout.spinner_layout,
                                         fromArrayNames
                                     ).also {
@@ -128,22 +134,50 @@ class AddNoteFragment : Fragment(),
             this
         ).get(AddNoteViewModel::class.java)
         addNoteViewModel.addNoteLiveData.observe(this, Observer {
-            processResponse(it)
+            processAddResponse(it)
+        })
+        addNoteViewModel.namesLiveData.observe(this, Observer {
+            processNamesResponse(it)
         })
     }
 
-    private fun processResponse(response: AddNotesResponse) {
+    private fun processAddResponse(response: AddNotesResponse) {
         when (response.status) {
             Status.LOADING -> showLoadingView()
             Status.SUCCESS -> {
-                this.findNavController()
-                    .navigate(AddNoteFragmentDirections.actionAddNoteFragmentToNotesFragment())
-                hideLoadingView()
-
                 // Clear views only in case of success.
                 // since we have already moved to next screen,
                 // it's less likely you'll find a glitch
+                hideSoftKeyboard(editNote)
                 clearViews()
+                hideLoadingView()
+                Snackbar.make(
+                    requireView(),
+                    "Your note was added successfully",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+            Status.ERROR -> {
+                hideLoadingView()
+                Toast.makeText(
+                    activity, "please check your internet connection",
+                    Toast.LENGTH_SHORT
+                ).show()
+                Log.v("api machine broke", response.error?.message.toString())
+            }
+
+        }
+    }
+
+    private fun processNamesResponse(response: NamesResponse) {
+        when (response.status) {
+            Status.LOADING -> showLoadingView()
+            Status.SUCCESS -> {
+                // Clear views only in case of success.
+                // since we have already moved to next screen,
+                // it's less likely you'll find a glitch
+                hideLoadingView()
+                initializeArrray(response.data?.names.toString(), requireContext())
             }
             Status.ERROR -> {
                 hideLoadingView()

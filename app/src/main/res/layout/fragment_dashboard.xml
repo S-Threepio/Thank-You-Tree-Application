@@ -16,7 +16,6 @@
         android:gravity="center"
         android:orientation="vertical"
         tools:context=".views.MainActivity">
-
         <TextView
             android:id="@+id/humble"
             android:layout_width="match_parent"
