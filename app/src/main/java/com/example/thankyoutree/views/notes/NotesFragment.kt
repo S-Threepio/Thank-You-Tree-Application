@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.application.example.FilterDialog
+import com.example.thankyoutree.R
 import com.example.thankyoutree.databinding.FragmentShowNotesBinding
 import com.example.thankyoutree.model.Note
 import com.example.thankyoutree.model.Notes

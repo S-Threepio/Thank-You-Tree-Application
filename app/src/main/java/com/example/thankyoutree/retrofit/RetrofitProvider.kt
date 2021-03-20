@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitProvider : Provider<Retrofit> {
-    val BASE_URL = " https://7z0ng7ffm2.execute-api.ap-south-1.amazonaws.com/"
+    val BASE_URL = " https://z0y9tg6nl3.execute-api.ap-south-1.amazonaws.com/"
     val gson = GsonConverterFactory.create()
 
     private val logging: HttpLoggingInterceptor =

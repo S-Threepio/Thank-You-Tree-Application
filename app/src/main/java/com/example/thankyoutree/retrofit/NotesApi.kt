@@ -9,12 +9,12 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface NotesApi {
-    @GET("hsbc-dev/notes")
+    @GET("dev/notes")
     fun getAllNotes(): Deferred<Array<Note>>
 
-    @POST("hsbc-dev/note")
+    @POST("dev/note")
     fun addNote(@Body note:Request):Deferred<Note>
 
-    @GET(value = "hsbc-dev")
+    @GET(value = "dev")
     fun getListOfNames():Deferred<NamesOfEmployees>
 }
