@@ -8,19 +8,19 @@
     <fragment
         android:id="@+id/navigation_add_note"
         android:name="com.example.thankyoutree.views.add.AddNoteFragment"
-        android:label="Add Note"
+        android:label="Add a note"
         tools:layout="@layout/fragment_add_note" />
 
     <fragment
         android:id="@+id/navigation_show_notes"
         android:name="com.example.thankyoutree.views.notes.NotesFragment"
-        android:label="Show Notes"
+        android:label="Thank you tree"
         tools:layout="@layout/fragment_show_notes" />
 
     <fragment
         android:id="@+id/navigation_dash"
         android:name="com.example.thankyoutree.views.dashboard.DashBoardFragment"
-        android:label="DashBoardFragment">
+        android:label="Dashboard">
         <action
             android:id="@+id/action_dashBoardFragment_to_helperFragment"
             app:destination="@id/helperFragment"
@@ -37,7 +37,7 @@
     <fragment
         android:id="@+id/helperFragment"
         android:name="com.example.thankyoutree.views.dashboard.helper.HelperFragment"
-        android:label="HelperFragment">
+        android:label="Most Thank you Received">
         <action
             android:id="@+id/action_helperFragment_to_receiptFragment"
             app:destination="@id/receiptFragment"
@@ -49,7 +49,7 @@
     <fragment
         android:id="@+id/humbleFragment"
         android:name="com.example.thankyoutree.views.dashboard.humble.HumbleFragment"
-        android:label="HumbleFragment">
+        android:label="Most Thank you Given">
         <action
             android:id="@+id/action_humbleFragment_to_receiptFragment"
             app:destination="@id/receiptFragment"
@@ -60,8 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/receiptFragment"
-        android:name="com.example.thankyoutree.views.receipt.ReceiptFragment"
-        android:label="ReceiptFragment">
+        android:name="com.example.thankyoutree.views.receipt.ReceiptFragment">
         <argument
             android:name="name"
             app:argType="string" />

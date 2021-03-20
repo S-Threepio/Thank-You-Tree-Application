@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="?attr/actionBarSize"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:notesList="@{viewModel.notesLiveData}" />
+            app:notesList="@{viewModel.displayLiveData}" />
 
         <include layout="@layout/loader_layout" />
 
