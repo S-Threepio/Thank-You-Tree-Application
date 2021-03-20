@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_show_notes">
+
+    <fragment
+        android:id="@+id/navigation_add_note"
+        android:name="com.example.thankyoutree.views.add.AddNoteFragment"
+        android:label="Add a note"
+        tools:layout="@layout/fragment_add_note" />
+
+    <fragment
+        android:id="@+id/navigation_show_notes"
+        android:name="com.example.thankyoutree.views.notes.NotesFragment"
+        android:label="Thank you tree"
+        tools:layout="@layout/fragment_show_notes" />
+
+    <fragment
+        android:id="@+id/navigation_dash"
+        android:name="com.example.thankyoutree.views.dashboard.DashBoardFragment"
+        android:label="Dashboard">
+        <action
+            android:id="@+id/action_dashBoardFragment_to_helperFragment"
+            app:destination="@id/helperFragment"
+            app:popUpTo="@id/navigation_dash"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_dashBoardFragment_to_humbleFragment"
+            app:destination="@id/humbleFragment"
+            app:popUpTo="@id/navigation_dash"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/helperFragment"
+        android:name="com.example.thankyoutree.views.dashboard.helper.HelperFragment"
+        android:label="Most Thank you Received">
+        <action
+            android:id="@+id/action_helperFragment_to_receiptFragment"
+            app:destination="@id/receiptFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/receiptFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/humbleFragment"
+        android:name="com.example.thankyoutree.views.dashboard.humble.HumbleFragment"
+        android:label="Most Thank you Given">
+        <action
+            android:id="@+id/action_humbleFragment_to_receiptFragment"
+            app:destination="@id/receiptFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/receiptFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/receiptFragment"
+        android:name="com.example.thankyoutree.views.receipt.ReceiptFragment">
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="count"
+            app:argType="string" />
+        <argument
+            android:name="journey"
+            app:argType="string" />
+    </fragment>
+</navigation>

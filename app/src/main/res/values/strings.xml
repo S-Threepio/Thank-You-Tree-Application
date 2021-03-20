@@ -13,4 +13,8 @@
 
     <string name="to_item">To :  %1$s</string>
     <string name="from_item">From :  %1$s</string>
+    <string name="title_activity_bottom">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
