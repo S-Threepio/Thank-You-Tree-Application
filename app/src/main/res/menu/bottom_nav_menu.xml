@@ -5,10 +5,10 @@
     <item
         android:id="@+id/navigation_add_note"
         android:icon="@drawable/ic_add"
-        android:title="Add notes" />
+        android:title="Add note" />
     <item
         android:id="@+id/navigation_show_notes"
-        android:icon="@drawable/ic_notes"
+        android:icon="@drawable/ic_park_white_24dp"
         android:title="Notes" />
 
 
